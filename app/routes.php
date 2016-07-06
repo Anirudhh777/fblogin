@@ -14,13 +14,10 @@
 Route::get('/', function()
 {
 	$user = array();
-	$user_pages = array();
 	if(Auth::check()) {
 		$user = Auth::user();
-		$user_pages = Session::get('pages');
-		// var_dump($user_pages);
 	}
-	return View::make('hello', array('user' => $user), array('user_pages' => $user_pages));
+	return View::make('hello', array('user' => $user));
 });
 
 Route::get('login/fb', 'LoginFacebookController@login');
@@ -38,5 +35,3 @@ Route::get('/page', function()
 	$fbtoken = Session::get('token_fb');
 	return View::make('page', array('page_insight' => $page_insight), array('fbtoken' => $fbtoken));
 });
-
-Route::get('back/page/{token}', 'LoginFacebookController@pageBack', function($token){});

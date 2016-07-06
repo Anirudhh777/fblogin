@@ -29,19 +29,14 @@ class LoginFacebookController extends \BaseController {
 			$user = new User;
 			$user->name = $user_fb->getProperty('name');
 			$user->uid_fb = $user_fb->getProperty('id');
-
 			$user->save();
 		}
 
 		$user->access_token_fb = $this->fb->getToken();
+		$user->pages = serialize($this->fb->getPages($user->access_token_fb));
 		$user->save();
-
-		$user_pages = $this->fb->getPages($user->access_token_fb);
-		// var_dump($user_pages);
-
 		Auth::login($user);
-
-		return Redirect::to('/')->with(array('pages' => $user_pages), 'message', 'Logged In');
+		return Redirect::to('/')->with('message', 'Logged In');
 		
 	}
 
@@ -49,10 +44,5 @@ class LoginFacebookController extends \BaseController {
 		$page_insight = $this->fb->getInsights($pageid, $token);
 		$token_fb = $token;
 		return Redirect::to('/page')->with(array('page_insight' => $page_insight))->with(array('token_fb' => $token_fb));
-	}
-
-	public function pageBack($token){
-		$user_pages = $this->fb->getPages($token);
-		return Redirect::to('/')->with(array('pages' => $user_pages));
 	}
 }

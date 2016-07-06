@@ -20,6 +20,7 @@ class CreateUserTable extends Migration {
 			$table->bigInteger('uid_fb');
 			$table->string('access_token_fb');
 			$table->string('remember_token');
+			$table->longText('pages');
 			$table->timestamps();
 		});
 
